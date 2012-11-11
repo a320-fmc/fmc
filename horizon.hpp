@@ -1,5 +1,6 @@
 
 #include<vector>
+#include <memory>
 
 #include "widget.hpp"
 #include "path.hpp"
@@ -7,6 +8,8 @@
 
 class horyzon_widget_t: public widget_t
 {
+typedef std::vector<base_path_t *> BasePaths;
+
 public:
 	horyzon_widget_t();
 
@@ -23,7 +26,7 @@ public:
 	
 
 private:
-	std::vector<path_t> m_paths;
+	BasePaths m_paths;
 	VGMaskLayer m_mask;
 
 	float m_pitch, m_bank, m_slip;

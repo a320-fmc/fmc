@@ -1,5 +1,8 @@
 #include "path.hpp"
 
+VGCoord::VGCoord(VGfloat x, VGfloat y) :
+			x(x), y(y)
+{ }
 
 color_t::color_t(VGfloat red, VGfloat green, VGfloat blue, VGfloat alpha)
 {
@@ -62,10 +65,32 @@ VGPaintMode paint_stroke_t::set_paint() const
 	return VG_FILL_PATH;
 }
 
+template <class Paint>
+path_t<Paint>::path_t(Paint paint) : m_paint(paint)
+{
+}
+
+template <class Paint>
+void path_t<Paint>::draw()
+{
+	VGPaintMode paint_mode;
+	paint_mode = m_paint.set_paint();
+	vgDrawPath(m_path, paint_mode);
+}
+
 line_t::line_t(VGCoord &from, VGCoord &to, paint_stroke_t &paint):
-		m_paint(paint)
+		path_t(paint)
 {
 	VGUErrorCode err;
 	m_path = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	err = vguLine(m_path, from.x, from.y, to.x, to.y);
 }
+
+rect_t::rect_t(VGCoord from, VGCoord size, paint_fill_t paint):
+		path_t(paint)
+{
+	VGUErrorCode err;
+	m_path = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
+	err = vguRect(m_path, from.x, from.y, size.x, size.y);
+}
+

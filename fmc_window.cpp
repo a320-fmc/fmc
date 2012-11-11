@@ -9,6 +9,6 @@ fmc_window_t::~fmc_window_t()
 
 void fmc_window_t::render()
 {
-
+	m_horizon.render();
 	return;
 }

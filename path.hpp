@@ -3,14 +3,16 @@
 #include <VG/vgu.h>
 #include <EGL/egl.h>
 
-struct VGCoord {
+class VGCoord {
+public:
+	VGCoord(VGfloat x, VGfloat y);
 	VGfloat x;
 	VGfloat y;
 };
 
 class color_t {
 public:
-	color_t(VGfloat red, VGfloat green, VGfloat blue, VGfloat alpha);
+	color_t(VGfloat red, VGfloat green, VGfloat blue, VGfloat alpha = 0xFF);
 	int size() const;
 	VGuint uint() const;
 private:
@@ -32,6 +34,7 @@ public:
 
 class paint_stroke_t: public paint_t {
 public:
+	paint_stroke_t();
 	paint_stroke_t(color_t color, 
 			float stroke_width,
 			VGCapStyle cap_style=VG_CAP_SQUARE,
@@ -46,11 +49,19 @@ private:
 	float m_miter_limit;
 };
 
-template <class Paint> class path_t {
+class base_path_t {
 public:
-	inline virtual void draw();
+	inline virtual void draw() = 0;
 protected:
 	VGPath m_path;
+};
+
+
+template <class Paint> class path_t: public base_path_t {
+public:
+	path_t(Paint paint);
+	inline virtual void draw();
+protected:
 	Paint m_paint;
 };
 
@@ -58,12 +69,10 @@ class line_t: public path_t<paint_stroke_t>
 {
 public:
 	line_t(VGCoord &from, VGCoord &to, paint_stroke_t &paint);
-	inline virtual void draw();
 };
 
 class rect_t: public path_t<paint_fill_t>
 {
 public:
 	rect_t(VGCoord from, VGCoord size, paint_fill_t paint);
-	inline virtual void draw();
 };
