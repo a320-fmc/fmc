@@ -33,7 +33,9 @@ public:
 	
 
 private:
-	BasePaths m_paths;
+	BasePaths m_background;
+	BasePaths m_background_overlay;
+	BasePaths m_overlay;
 	//VGMaskLayer m_mask;
 	horizon_mask_t m_mask;
 
@@ -43,5 +45,11 @@ private:
 	int m_ra;
 
 	const float horizon_width_angle;
+
+	color_t m_ground_color;
+	color_t m_sky_color;
+	color_t m_black_color;
+	paint_stroke_t m_white_stroke;
+	paint_stroke_t m_yellow_stroke;
 };
 

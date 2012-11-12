@@ -20,6 +20,8 @@ include_directories("/opt/vc/include"
 
 link_directories("/opt/vc/lib")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+
 add_executable (${PROJECT} ${HEADERS} ${SOURCES})
 
 target_link_libraries(${PROJECT}

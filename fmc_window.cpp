@@ -9,7 +9,7 @@ fmc_window_t::~fmc_window_t()
 
 void fmc_window_t::render()
 {
-	float clearColor[4] = {0,0,0,1};
+	float clearColor[4] = {0.1,0.1,0.1,1};
 
 	eglSwapBuffers(egldisplay, eglsurface); //force EGL to recognize resize
 

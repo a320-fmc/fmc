@@ -15,7 +15,7 @@ static inline void check_vg_error(VGErrorCode err) {
 	{
 		std::cerr << "Error: " << err << std::endl;
 		std::stringstream ss;
-		ss << "Error code: " << err;
+		ss << "Error code: " << std::hex << err;
 		throw std::runtime_error(ss.str().c_str());
 	}
 }
@@ -25,7 +25,7 @@ static inline void check_vg_error(VGUErrorCode err) {
 	{
 		std::cerr << "Error: " << err << std::endl;
 		std::stringstream ss;
-		ss << "Error code: " << err;
+		ss << "Error code: " << std::hex << err;
 		throw std::runtime_error(ss.str().c_str());
 	}
 }

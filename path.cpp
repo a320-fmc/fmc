@@ -83,6 +83,7 @@ path_t<Paint>::path_t(Paint paint) : m_paint(paint)
 {
 }
 
+
 template <class Paint>
 void path_t<Paint>::draw()
 {
