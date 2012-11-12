@@ -4,8 +4,10 @@ int main(int argc, char * argv[])
 {
 	bcm_host_init();
 	fmc_window_t w(0,0,500,500);
-	while(1) {
+	while(1)
+	{
 		w.render();
+		sleep(1);
 	}
 	return 0;
 }

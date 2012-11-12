@@ -3,6 +3,8 @@
 #include <VG/vgu.h>
 #include <EGL/egl.h>
 
+#include "fmc.hpp"
+
 class VGCoord {
 public:
 	VGCoord(VGfloat x, VGfloat y);
@@ -12,11 +14,13 @@ public:
 
 class color_t {
 public:
-	color_t(VGfloat red, VGfloat green, VGfloat blue, VGfloat alpha = 0xFF);
+	color_t(VGfloat red, VGfloat green, VGfloat blue, VGfloat alpha = 0.f);
+	color_t(VGuint color);
 	int size() const;
 	VGuint uint() const;
 private:
 	VGfloat m_color[4];
+	VGuint m_ucolor;
 };
 
 class paint_t {
@@ -68,7 +72,7 @@ protected:
 class line_t: public path_t<paint_stroke_t>
 {
 public:
-	line_t(VGCoord &from, VGCoord &to, paint_stroke_t &paint);
+	line_t(VGCoord from, VGCoord to, paint_stroke_t paint);
 };
 
 class rect_t: public path_t<paint_fill_t>

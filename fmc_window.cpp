@@ -9,6 +9,17 @@ fmc_window_t::~fmc_window_t()
 
 void fmc_window_t::render()
 {
-	m_horizon.render();
+	float clearColor[4] = {0,0,0,1};
+
+	eglSwapBuffers(egldisplay, eglsurface); //force EGL to recognize resize
+
+	vgSetfv(VG_CLEAR_COLOR, 4, clearColor);
+	vgClear(0, 0, width, height);
+
+	m_horizon.render(width, height);
+	
+	eglSwapBuffers(egldisplay, eglsurface);
+	check_vg_error(vgGetError());
+
 	return;
 }

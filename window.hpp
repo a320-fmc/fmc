@@ -17,7 +17,7 @@ public:
 protected:
 	int32_t		x, y;
 	int32_t		width, height;
-private:
+
 	EGL_DISPMANX_WINDOW_T nativewindow;
 	EGLDisplay	egldisplay;
 	EGLConfig	eglconfig;
