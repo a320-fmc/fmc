@@ -96,7 +96,7 @@ void path_t<Paint>::draw()
 line_t::line_t(VGCoord from, VGCoord to, paint_stroke_t paint):
 		path_t(paint)
 {
-	std::cout << "Creating line" << std::endl;
+	//std::cout << "Creating line" << std::endl;
 	VGUErrorCode err;
 	m_path = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	err = vguLine(m_path, from.x, from.y, to.x, to.y);
@@ -106,7 +106,7 @@ line_t::line_t(VGCoord from, VGCoord to, paint_stroke_t paint):
 rect_t::rect_t(VGCoord from, VGCoord size, paint_fill_t paint):
 		path_t(paint)
 {
-	std::cout << "Creating rect" << std::endl;
+	//std::cout << "Creating rect" << std::endl;
 	VGUErrorCode err;
 	m_path = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 	err = vguRect(m_path, from.x, from.y, size.x, size.y);
