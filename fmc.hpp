@@ -1,7 +1,7 @@
 #ifndef FMC_HPP
 #define FMC_HPP
 
-
+#include <cmath>
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
@@ -28,6 +28,10 @@ static inline void check_vg_error(VGUErrorCode err) {
 		ss << "Error code: " << std::hex << err;
 		throw std::runtime_error(ss.str().c_str());
 	}
+}
+
+static inline float deg_to_rad(float deg) {
+	return (deg * M_PI / 180);
 }
 
 #endif /* FMC_HPP */
