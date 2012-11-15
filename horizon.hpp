@@ -8,7 +8,7 @@
 class horizon_mask_t: public base_path_t
 {
 public:
-	horizon_mask_t();
+	horizon_mask_t(float horizon_radius);
 	void apply_mask(uint32_t width, uint32_t height);
 	void draw();
 };
@@ -33,6 +33,8 @@ public:
 	
 
 private:
+	const float horizon_radius;
+
 	BasePaths m_background;
 	BasePaths m_background_overlay;
 	BasePaths m_overlay;
@@ -43,8 +45,6 @@ private:
 	float m_target_pitch, m_target_bank, m_target_yaw; // Used for FD bars
 	float m_heading, m_target_heading;
 	int m_ra;
-
-	const float horizon_width_angle;
 
 	color_t m_ground_color;
 	color_t m_sky_color;

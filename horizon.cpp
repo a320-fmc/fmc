@@ -4,10 +4,11 @@
 
 
 horyzon_widget_t::horyzon_widget_t() :
+	horizon_radius(20.f / sin(deg_to_rad(60.f))),
+	m_mask(horizon_radius),
 	m_pitch(10), m_bank(10), m_slip(0),
 	m_target_pitch(0), m_target_bank(0), m_target_yaw(0),
 	m_heading(0), m_target_heading(0), m_ra(0),
-	horizon_width_angle(60.f * M_PI / 180),
 	m_ground_color(0x603311FF),
 	m_sky_color(0x007FFFFF),
 	m_black_color(0x000000FF),
@@ -49,7 +50,7 @@ void horyzon_widget_t::create_horizon_bg()
 				break;
 		}
 
-		std::cout << "adding line " << 2.5f * ang << " len " << len << std::endl;
+		//std::cout << "adding line " << 2.5f * ang << " len " << len << std::endl;
 		m_background.push_back(new line_t(VGCoord(-len, 2.5f * ang), VGCoord(len, 2.5f * ang), white_stroke));
 		m_background.push_back(new line_t(VGCoord(-len, -2.5f * ang), VGCoord(len, -2.5f * ang), white_stroke));
 	}
@@ -98,13 +99,12 @@ void horyzon_widget_t::create_horizon_overlay()
 
 	m_overlay.push_back(new circle_t<paint_fill_t>(VGCoord(0, 0), 1.4f, black_color));
 	m_overlay.push_back(new circle_t<paint_stroke_t>(VGCoord(0, 0), 1.4f, yellow_stroke));
-
 }
 
 void horyzon_widget_t::render(uint32_t width, uint32_t height)
 {
 	//BasePaths::iterator it;
-	std::cout << "In horizon render" << m_background.size() << std::endl;
+	//std::cout << "In horizon render" << m_background.size() << std::endl;
 
 	float scale = float(width) / 100;
 	float pitch_scale = float(height) / 100.f;
@@ -118,7 +118,7 @@ void horyzon_widget_t::render(uint32_t width, uint32_t height)
 	int i = 0;
 	for (auto it = m_background.begin(); it != m_background.end(); it++)
 	{
-		std::cout << "Draw path" << i << std::endl;
+		//std::cout << "Draw path" << i << std::endl;
 		(*it)->draw();
 		i++;
 	}
@@ -130,7 +130,7 @@ void horyzon_widget_t::render(uint32_t width, uint32_t height)
 	i = 0;
 	std::for_each(m_background_overlay.begin(), m_background_overlay.end(),
 				[&i](base_path_t* it) {
-					std::cout << "Draw bg overlay" << i++ << std::endl;
+					//std::cout << "Draw bg overlay" << i++ << std::endl;
 					it->draw();
 				}
 			);
@@ -142,7 +142,7 @@ void horyzon_widget_t::render(uint32_t width, uint32_t height)
 	i = 0;
 	for (auto it = m_overlay.begin(); it != m_overlay.end(); it++)
 	{
-		std::cout << "Draw overlay" << i << std::endl;
+		//std::cout << "Draw overlay" << i << std::endl;
 		(*it)->draw();
 		i++;
 	}
@@ -150,23 +150,24 @@ void horyzon_widget_t::render(uint32_t width, uint32_t height)
 	m_mask.apply_mask(width, height);
 }
 
-horizon_mask_t::horizon_mask_t()
+horizon_mask_t::horizon_mask_t(float horizon_radius)
 {
 	m_path = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_F, 1.0f, 0.0f, 0, 0, VG_PATH_CAPABILITY_ALL);
 
 	VGubyte aui8PathSegments[5];
 	aui8PathSegments[0] = VG_MOVE_TO_ABS;
-	aui8PathSegments[1] = VG_LINE_TO_ABS;
+	aui8PathSegments[1] = VG_SCCWARC_TO_ABS;
 	aui8PathSegments[2] = VG_LINE_TO_ABS;
 	aui8PathSegments[3] = VG_SCCWARC_TO_ABS;
 	aui8PathSegments[4] = VG_CLOSE_PATH;
 
+	float vertical = horizon_radius*cos(deg_to_rad(60));
 
 	VGfloat afPoints[] = {
-			-20.f, -10.0f,
-			20.f, -10.0f,
-			20.f, 30.f,
-			30.f, 30.f, 10, -20.f, 30.f,
+			-20.f, -vertical,
+			horizon_radius, horizon_radius, 10, 20.f, -vertical,
+			20.f, vertical,
+			horizon_radius, horizon_radius, 10, -20.f, vertical,
 			};
 	vgAppendPathData(m_path, 5, aui8PathSegments, afPoints);
 }
